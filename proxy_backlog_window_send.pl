@@ -1,8 +1,6 @@
 #!/usr/bin/perl
-#
-# Do you feel tired of typing /wii ick nick?
-# Just try idletime.pl :)
-# By Stefan "tommie" Tomanek (stefan@kann-nix.org)
+
+# See the readme file.
 
 use strict;
 use File::Copy;
