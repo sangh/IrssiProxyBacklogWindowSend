@@ -80,9 +80,12 @@ sub sendbacklog {
     my( $aref ) = @_;
     my @a = @$aref;
     my $serv = shift( @a );
-    foreach my $line ( @a ) {
+    my $line = shift( @a );
+    if( defined( $line ) ) {
         chomp( $line );
         $serv->command("msg #backlog $line");
+        my @args = ( $serv, @a );
+        Irssi::timeout_add_once( 250, \&sendbacklog, \@args );
     }
 }
 
