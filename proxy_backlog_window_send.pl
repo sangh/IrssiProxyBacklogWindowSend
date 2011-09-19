@@ -20,7 +20,7 @@ $VERSION = "20110918";
     commands    => "backlogwindowsend"
 );
 
-my $aldir = "/home/saneesh/.irssi/autolog";
+my $aldir = "~/.irssi/autolog";
 
 # First make sure the autolog is what we want.
 Irssi::Server->command("set autolog_path $aldir/\$tag/\$0.log");
