@@ -1,3 +1,28 @@
+`Irssi` plugin to replay the backlog when a client connects to `Irssi`'s proxy.
+===============================================================================
+I wanted to use a native client on my new-ish fancy phone to connect
+to `irssi`'s proxy (via SSL) and have it replay the backlog of what
+I'd missed on all channels and private messages; all without using yet
+another program (like a bouncer (something like `znc`)).  So I wrote this
+plugin.
+
+It will start the autologging feature on load (or startup if you have the
+script load on `irssi` startup).  When a client connects it will stop the
+autolog, playback any lines in the log that are a message to a newly created
+window and channel called `#backlog`, and clear the autolog.  Now this means
+that the client will need to close the `#backlog` channel *and window* or the
+next time another window will be created and that channel played back (I should
+fix this).  I'm not sure if all clients can do that.
+
+Bugs
+====
+*  Should not playback the `#backlog` channel if it was left open.
+*  Should not open a new window if `#backlog` was left open.
+*  Doesn't always handle hanging connections properly (not really sure
+how I could detect that this is happening).
+
+The Story of why I wrote this.
+==============================
 I spent the better part of the last couple of days trying to get IRC working
 the way I want.  I should stop you right here and say that *I am a crazy
 person*; well adjusted people are perfectly fine to use what's available not
