@@ -19,7 +19,7 @@ Bugs
 *  Should not playback the `#backlog` channel if it was left open.
 *  Should not open a new window if `#backlog` was left open.
 *  Doesn't always handle hanging connections properly (not really sure
-how I could detect that this is happening).
+how I could detect that this is happening, maybe have a ping and timeout timer?).
 
 The Story of why I wrote this.
 ==============================
