@@ -99,9 +99,11 @@ sub cmd_backlogwindowsend {
     my ($client) = @_;
     my $serv = $client->{ server };
     # Start the window stuff.
-    $serv->command("window new hide");
-    $serv->command("join #backlog");
-    $serv->command("window last");
+    if( not defined( $serv->window_item_find( "#backlog" ) ) ) {
+        $serv->command("window new hide");
+        $serv->command("join #backlog");
+        $serv->command("window last");
+    }
 
     # Basically we turn off autolog, move the dir, and restart.
     $serv->command("set autolog off");

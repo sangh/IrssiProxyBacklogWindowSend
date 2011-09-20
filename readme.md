@@ -9,16 +9,21 @@ plugin.
 It will start the autologging feature on load (or startup if you have the
 script load on `irssi` startup).  When a client connects it will stop the
 autolog, playback any lines in the log that are a message to a newly created
-window and channel called `#backlog`, and clear the autolog.  Now this means
-that the client will need to close the `#backlog` channel *and window* or the
-next time another window will be created and that channel played back (I should
-fix this).  I'm not sure if all clients can do that.
+window and channel called `#backlog` (unless a channel called that already
+exists, in which case it will use that), clear the autolog, and restarts
+the autolog.  When a disconnect message is received the autolog is cleared.
+Now this means that the client will need to close the `#backlog`
+channel *and window* or the next time another window will be created.  It also
+means that there is a chance that if the client times-out (never sends a
+disconnect) then it may get more of a backlog than needed, but this is
+better than if it times out and misses everything until a clear or
+another disconnect.
 
 Bugs
 ====
-*  Should not open a new window if `#backlog` was left open.
 *  Doesn't always handle hanging connections properly (not really sure
-how I could detect that this is happening, maybe have a ping and timeout timer?).
+how I could detect that this is happening, or that a particular message
+was actually delivered).
 
 The Story of why I wrote this.
 ==============================
