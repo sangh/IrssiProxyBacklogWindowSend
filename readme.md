@@ -16,7 +16,6 @@ fix this).  I'm not sure if all clients can do that.
 
 Bugs
 ====
-*  Should not playback the `#backlog` channel if it was left open.
 *  Should not open a new window if `#backlog` was left open.
 *  Doesn't always handle hanging connections properly (not really sure
 how I could detect that this is happening, maybe have a ping and timeout timer?).

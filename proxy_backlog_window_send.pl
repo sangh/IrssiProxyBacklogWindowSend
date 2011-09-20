@@ -49,9 +49,15 @@ sub pullbacklog {
     my @ret = ();
     foreach my $tag ( <$aldir/*_backlogwindowsend/*> ) {
         $tag =~ m/\/([^\/]+)[.]log$/ ;
+        my $chan = $1;
+        # ignore the chan #backlog, if it was left open.
+        if( "#backlog" eq $chan ) {
+            unlink( "$tag" );
+            next;
+        }
         my $n = 0;
         open( F, "<", "$tag" );
-        push( @ret, ":::::::: $1 ::::::::" );
+        push( @ret, ":::::::: $chan ::::::::" );
         while( <F> ) {
             chomp;
             if( $_ =~ m/^([0-9]{2}[:][0-9]{2} [<][^>]+[>]) (.+)$/ ) {
@@ -62,7 +68,7 @@ sub pullbacklog {
                 $n = 1 + $n ;
             }
         }
-        push( @ret, ":::::::: $n lines in $1 ::::::::" );
+        push( @ret, ":::::::: $n lines in $chan ::::::::" );
         close( F );
         unlink( "$tag" );
     }
