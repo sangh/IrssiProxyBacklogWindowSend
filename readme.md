@@ -8,22 +8,36 @@ plugin.
 
 It will start the autologging feature on load (or startup if you have the
 script load on `irssi` startup).  When a client connects it will stop the
-autolog, playback any lines in the log that are a message to a newly created
+autolog, move the data (clear the autolog), start it up again,
+then playback any lines in the
+log that are a message to a newly created
 window and channel called `#backlog` (unless a channel called that already
-exists, in which case it will use that), clear the autolog, and restarts
-the autolog.  When a disconnect message is received the autolog is cleared.
+exists, in which case it will use that).
+When a disconnect message is received the autolog is not (see bugs below)
+cleared.
 Now this means that the client will need to close the `#backlog`
 channel *and window* or the next time another window will be created.  It also
 means that there is a chance that if the client times-out (never sends a
 disconnect) then it may get more of a backlog than needed, but this is
 better than if it times out and misses everything until a clear or
-another disconnect.
+another (possibly spurious) disconnect.
 
 Bugs
 ====
 *  Doesn't always handle hanging connections properly (not really sure
 how I could detect that this is happening, or that a particular message
-was actually delivered).
+was actually delivered).  If the proxy client times out it is possible
+that the server won't get a disconnect message from a random amount of
+time.  Ideally we would stop logging while the client is connected, but
+then there is a real (and probable) chance the it will miss messages.
+So we keep logging.  This means that the client will receive all the
+messages that have already been read not on a phone.  As a work-around
+I have an alias that clears the backlog that is often typed at not-a-phone
+but this is hackish.  Possible solutions are:
+*   *  Create a ping pong mechanism from `irssi` to the proxy client.
+*   *  Be much smarter about when the log is cleared, for instance when
+the proxy user sends a message, or when manual commands are typed that
+could not come from the proxy client.
 
 The Story of why I wrote this.
 ==============================

@@ -31,7 +31,8 @@ Irssi::Server->command("set autolog on");
 #Bind
 Irssi::command_bind('backlogwindowsend_clear' => \&cmd_backlogwindowsend_clear);
 Irssi::signal_add("proxy client connected" => \&cmd_backlogwindowsend );
-Irssi::signal_add("proxy client disconnected" => \&cmd_backlogwindowsend_clear_client );
+# Bad hack, for now.
+#Irssi::signal_add("proxy client disconnected" => \&cmd_backlogwindowsend_clear_client );
 
 # Helper function.
 sub pullbacklog {
