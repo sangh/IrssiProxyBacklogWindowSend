@@ -34,8 +34,8 @@ So we keep logging.  This means that the client will receive all the
 messages that have already been read not on a phone.  As a work-around
 I have an alias that clears the backlog that is often typed at not-a-phone
 but this is hackish.  Possible solutions are:
-*   *  Create a ping pong mechanism from `irssi` to the proxy client.
-*   *  Be much smarter about when the log is cleared, for instance when
+    *  Create a ping pong mechanism from `irssi` to the proxy client.
+    *  Be much smarter about when the log is cleared, for instance when
 the proxy user sends a message, or when manual commands are typed that
 could not come from the proxy client.
 
