@@ -99,10 +99,9 @@ sub sendbacklog {
         chomp( $line );
         $serv->command("msg $bchan $line");
         my @args = ( $serv, @a );
+        my $wait = $waitline;
         if( 0 == scalar( @a ) % $clientbufferlines ) {
-            my $wait = $waitclientbufferlines;
-        } else {
-            my $wait = $waitline;
+            $wait = $waitclientbufferlines;
         }
         Irssi::timeout_add_once( $wait, \&sendbacklog, \@args );
     }
