@@ -8,11 +8,11 @@ use Irssi;
 
 use vars qw($VERSION %IRSSI);
 
-$VERSION = "20110918";
+$VERSION = "20111021";
 %IRSSI = (
-    authors     => "San",
-    contact     => "san\@procyon.com",
-    name        => "San",
+    authors     => "San GH",
+    contact     => "http://github.com/sangh",
+    name        => "San GH",
     description => "On proxy connect, create a backlog channel in a hidden window and then send the backlog to it.",
     license     => "GPLv2",
     url         => "",
@@ -20,7 +20,17 @@ $VERSION = "20110918";
     commands    => "backlogwindowsend"
 );
 
+# Stuff the user may want to change.
+# Dir to store the autolog in.
 my $aldir = "~/.irssi/autolog";
+# Channal that is used (created if needed) to write the blog to.
+my $bchan = "#backlog_san";
+# Milli pause between lines sent (servers may choke if the is too fast).
+my $waitline = 200;
+# If the client has a set buffer, pause after this many lines.
+my $clientbufferlines = 30;
+# And pause for this long after $clientbufferlines, in millis.
+my $waitclientbufferlines = 30000;
 
 # First make sure the autolog is what we want.
 Irssi::Server->command("set autolog_path $aldir/\$tag/\$0.log");
@@ -48,8 +58,8 @@ sub pullbacklog {
     foreach my $tag ( <$aldir/*_backlogwindowsend/*> ) {
         $tag =~ m/\/([^\/]+)[.]log$/ ;
         my $chan = $1;
-        # ignore the chan #backlog, if it was left open.
-        if( "#backlog" eq $chan ) {
+        # ignore the chan $bchan, if it was left open.
+        if( "$bchan" eq $chan ) {
             unlink( "$tag" );
             next;
         }
@@ -87,9 +97,9 @@ sub sendbacklog {
     my $line = shift( @a );
     if( defined( $line ) ) {
         chomp( $line );
-        $serv->command("msg #backlog $line");
+        $serv->command("msg $bchan $line");
         my @args = ( $serv, @a );
-        Irssi::timeout_add_once( 250, \&sendbacklog, \@args );
+        Irssi::timeout_add_once( 200, \&sendbacklog, \@args );
     }
 }
 
@@ -97,9 +107,9 @@ sub cmd_backlogwindowsend {
     my ($client) = @_;
     my $serv = $client->{ server };
     # Start the window stuff.
-    if( not defined( $serv->window_item_find( "#backlog" ) ) ) {
+    if( not defined( $serv->window_item_find( "$bchan" ) ) ) {
         $serv->command("window new hide");
-        $serv->command("join #backlog");
+        $serv->command("join $bchan");
         $serv->command("window last");
     }
 
