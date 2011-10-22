@@ -27,8 +27,8 @@ my $aldir = "~/.irssi/autolog";
 my $bchan = "#backlog_san";
 # Milli pause between lines sent (servers may choke if the is too fast).
 my $waitline = 200;
-# If the client has a set buffer, pause after this many lines.
-my $clientbufferlines = 30;
+# If n lines is modulus this, pause for $waitclientbufferlines ms.
+my $clientbufferlines = 25;
 # And pause for this long after $clientbufferlines, in millis.
 my $waitclientbufferlines = 30000;
 
@@ -99,7 +99,12 @@ sub sendbacklog {
         chomp( $line );
         $serv->command("msg $bchan $line");
         my @args = ( $serv, @a );
-        Irssi::timeout_add_once( 200, \&sendbacklog, \@args );
+        if( 0 == scalar( @a ) % $clientbufferlines ) {
+            my $wait = $waitclientbufferlines;
+        } else {
+            my $wait = $waitline;
+        }
+        Irssi::timeout_add_once( $wait, \&sendbacklog, \@args );
     }
 }
 
