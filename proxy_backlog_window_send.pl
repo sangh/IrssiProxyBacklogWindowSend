@@ -64,7 +64,7 @@ sub pullbacklog {
     }
     $serv->command("set autolog on");
     # If we want a permanant history
-    if defined( $permhistdir ) {
+    if( defined( $permhistdir ) ) {
         my $epochsec = time();
         foreach my $tag ( <$aldir/*_backlogwindowsend> ) {
             $tag =~ m/\/([^\/]+)_backlogwindowsend$/ ;
