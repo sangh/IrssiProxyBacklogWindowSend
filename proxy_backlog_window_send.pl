@@ -34,7 +34,8 @@ my $clientbufferlines = 25;
 my $waitclientbufferlines = 30000;
 # If you want to keep a permanant history of the logs, then set
 # this to a directory, if it's undef then nothing will be stored.
-my $permhistdir = undef;
+#my $permhistdir = undef;
+my $permhistdir = "~/.irssi/autolog_saved";
 
 # First make sure the autolog is what we want.
 Irssi::Server->command("set autolog_path $aldir/\$tag/\$0.log");
