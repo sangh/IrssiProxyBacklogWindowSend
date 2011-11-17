@@ -46,14 +46,19 @@ Irssi::signal_add("proxy client connected" => \&cmd_backlogwindowsend );
 
 # Helper function.
 sub pullbacklog {
+    my ($serv) = @_;
     # Check if there are unfinished logs.
     foreach my $tag ( <$aldir/*_backlogwindowsend> ) {
         return((":::::::: Backlog proxy thing found " .
                 "previous unfinised logs. ::::::::"));
     }
+    # We want the log off for as little time as possible.
+    $serv->command("set autolog off");
     foreach my $tag ( <$aldir/*> ) {
         move( "$tag", "$tag"."_backlogwindowsend" );
     }
+    $serv->command("set autolog on");
+    #
     my @ret = ();
     foreach my $tag ( <$aldir/*_backlogwindowsend/*> ) {
         $tag =~ m/\/([^\/]+)[.]log$/ ;
@@ -118,11 +123,7 @@ sub cmd_backlogwindowsend {
     }
 
     # Basically we turn off autolog, move the dir, and restart.
-    $serv->command("set autolog off");
-
-    my @args = ( $serv, pullbacklog() );
-
-    $serv->command("set autolog on");
+    my @args = ( $serv, pullbacklog( $serv ) );
 
     Irssi::timeout_add_once( 6000, \&sendbacklog, \@args );
 }
@@ -130,16 +131,12 @@ sub cmd_backlogwindowsend {
 sub cmd_backlogwindowsend_clear_client {
     my ($client) = @_;
     my $serv = $client->{ server };
-    $serv->command("set autolog off");
-    my @s = pullbacklog();
+    my @s = pullbacklog( $serv );
     $serv->print(undef, "Threw away ".int(@s)." lines from log.");
-    $serv->command("set autolog on");
 }
 
 sub cmd_backlogwindowsend_clear {
     my ($args, $serv, $item) = @_;
-    $serv->command("set autolog off");
-    my @s = pullbacklog();
+    my @s = pullbacklog( $serv );
     $serv->print(undef, "Threw away ".int(@s)." lines from log.");
-    $serv->command("set autolog on");
 }
