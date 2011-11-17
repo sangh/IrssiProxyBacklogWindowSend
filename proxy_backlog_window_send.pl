@@ -4,6 +4,7 @@
 
 use strict;
 use File::Copy;
+use File::Path;
 use Irssi;
 
 use vars qw($VERSION %IRSSI);
@@ -31,6 +32,9 @@ my $waitline = 200;
 my $clientbufferlines = 25;
 # And pause for this long after $clientbufferlines, in millis.
 my $waitclientbufferlines = 30000;
+# If you want to keep a permanant history of the logs, then set
+# this to a directory, if it's undef then nothing will be stored.
+my $permhistdir = undef;
 
 # First make sure the autolog is what we want.
 Irssi::Server->command("set autolog_path $aldir/\$tag/\$0.log");
@@ -58,7 +62,19 @@ sub pullbacklog {
         move( "$tag", "$tag"."_backlogwindowsend" );
     }
     $serv->command("set autolog on");
-    #
+    # If we want a permanant history
+    if defined( $permhistdir ) {
+        my $epochsec = time();
+        foreach my $tag ( <$aldir/*_backlogwindowsend> ) {
+            $tag =~ m/\/([^\/]+)_backlogwindowsend$/ ;
+            my $dir = $1;
+            my $ndir = $permhistdir . "/" . $epochsec . "_" . $dir;
+            mkpath( $ndir );
+            foreach my $f ( <$tag/*> ) {
+                copy( $f, $ndir . "/" . $f );
+            }
+        }
+    }
     my @ret = ();
     foreach my $tag ( <$aldir/*_backlogwindowsend/*> ) {
         $tag =~ m/\/([^\/]+)[.]log$/ ;
