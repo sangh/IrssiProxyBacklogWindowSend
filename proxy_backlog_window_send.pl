@@ -23,7 +23,7 @@ $VERSION = "20111021";
 
 # Stuff the user may want to change.
 # Dir to store the autolog in.
-my $aldir = "~/.irssi/autolog";
+my $aldir = $ENV{"HOME"} . "/.irssi/autolog";
 # Channal that is used (created if needed) to write the blog to.
 my $bchan = "#backlog_san";
 # Milli pause between lines sent (servers may choke if the is too fast).
@@ -35,7 +35,7 @@ my $waitclientbufferlines = 30000;
 # If you want to keep a permanant history of the logs, then set
 # this to a directory, if it's undef then nothing will be stored.
 #my $permhistdir = undef;
-my $permhistdir = "~/.irssi/autolog_saved";
+my $permhistdir = $ENV{"HOME"} . "/.irssi/autolog_saved";
 
 # First make sure the autolog is what we want.
 Irssi::Server->command("set autolog_path $aldir/\$tag/\$0.log");
@@ -72,7 +72,9 @@ sub pullbacklog {
             my $ndir = $permhistdir . "/" . $epochsec . "_" . $dir;
             mkpath( $ndir );
             foreach my $f ( <$tag/*> ) {
-                copy( $f, $ndir . "/" . $f );
+                $f =~ m/\/([^\/]+)$/ ;
+                my $c = $1;
+                copy( $f, $ndir . "/" . $1 );
             }
         }
     }
@@ -90,9 +92,9 @@ sub pullbacklog {
         push( @ret, ":::::::: $chan ::::::::" );
         while( <F> ) {
             chomp;
-            if( $_ =~ m/^([0-9]{2}[:][0-9]{2} [<][^>]+[>]) (.+)$/ ) {
-                my $timenick = $1;
-                my $mesg = $2;
+            if( $_ =~ m/^([0-9]{2}[:][0-9]{2}) ([<][^>]+[>]|\[[^\]]+\]|[{][^}]+[}]) (.+)$/ ) {
+                my $timenick = $1 . " " . $2;
+                my $mesg = $3;
                 push( @ret, "$timenick" );
                 push( @ret, "$mesg" );
                 $n = 1 + $n ;
