@@ -69,7 +69,12 @@ sub pullbacklog {
         foreach my $tag ( <$aldir/*_backlogwindowsend> ) {
             $tag =~ m/\/([^\/]+)_backlogwindowsend$/ ;
             my $dir = $1;
+            # Ugly hack in case this gets called more than once a secont.
             my $ndir = $permhistdir . "/" . $epochsec . "_" . $dir;
+            while( -e $ndir ) {
+                $epochsec = $epochsec + 1;
+                $ndir = $permhistdir . "/" . $epochsec . "_" . $dir;
+            }
             mkpath( $ndir );
             foreach my $f ( <$tag/*> ) {
                 $f =~ m/\/([^\/]+)$/ ;
