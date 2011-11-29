@@ -152,7 +152,7 @@ sub cmd_backlogwindowsend {
     }
 
     # Basically we turn off autolog, move the dir, and restart.
-    my @args = ( $serv, pullbacklog( $serv ) );
+    my @args = ( $serv, pullbacklog( $serv ), ":::::::: END ALL ::::::::" );
 
     Irssi::timeout_add_once( 6000, \&sendbacklog, \@args );
 }
