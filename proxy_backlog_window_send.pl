@@ -24,8 +24,8 @@ $VERSION = "20111021";
 # Stuff the user may want to change.
 # Dir to store the autolog in.
 my $aldir = $ENV{"HOME"} . "/.irssi/autolog";
-# Channal that is used (created if needed) to write the blog to.
-my $bchan = "#backlog" . Irssi::Server->{ nick };
+# Channal that is used (created if needed) to write the blog to, nick is added.
+my $bchan_prefix = "#backlog";
 # Milli pause between lines sent (servers may choke if the is too fast).
 my $waitline = 200;
 # If n lines is modulus this, pause for $waitclientbufferlines ms.
@@ -48,6 +48,9 @@ Irssi::command_bind('backlogwindowsend_clear' => \&cmd_backlogwindowsend_clear);
 Irssi::signal_add("proxy client connected" => \&cmd_backlogwindowsend );
 # Bad hack, for now.
 #Irssi::signal_add("proxy client disconnected" => \&cmd_backlogwindowsend_clear_client );
+
+# One global, start script adds the nick.
+my $bchan = $bchan_prefix;
 
 # Helper function.
 sub pullbacklog {
@@ -139,6 +142,8 @@ sub sendbacklog {
 sub cmd_backlogwindowsend {
     my ($client) = @_;
     my $serv = $client->{ server };
+    # Set the channel to use (global).
+    $bchan = $bchan_prefix . $server->{ nick };
     # Start the window stuff.
     if( not defined( $serv->window_item_find( "$bchan" ) ) ) {
         $serv->command("window new hide");
