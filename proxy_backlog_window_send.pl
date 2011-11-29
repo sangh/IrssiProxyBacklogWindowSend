@@ -143,7 +143,7 @@ sub cmd_backlogwindowsend {
     my ($client) = @_;
     my $serv = $client->{ server };
     # Set the channel to use (global).
-    $bchan = $bchan_prefix . $server->{ nick };
+    $bchan = $bchan_prefix . $serv->{ nick };
     # Start the window stuff.
     if( not defined( $serv->window_item_find( "$bchan" ) ) ) {
         $serv->command("window new hide");
