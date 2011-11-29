@@ -25,7 +25,7 @@ $VERSION = "20111021";
 # Dir to store the autolog in.
 my $aldir = $ENV{"HOME"} . "/.irssi/autolog";
 # Channal that is used (created if needed) to write the blog to.
-my $bchan = "#backlog_san";
+my $bchan = "#backlog" . Irssi::Server->{ nick };
 # Milli pause between lines sent (servers may choke if the is too fast).
 my $waitline = 200;
 # If n lines is modulus this, pause for $waitclientbufferlines ms.
