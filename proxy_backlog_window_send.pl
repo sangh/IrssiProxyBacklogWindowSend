@@ -26,12 +26,12 @@ $VERSION = "20111021";
 my $aldir = $ENV{"HOME"} . "/.irssi/autolog";
 # Channal that is used (created if needed) to write the blog to, nick is added.
 my $bchan_prefix = "#backlog_";
-# Milli pause between lines sent (servers may choke if the is too fast).
+# Milli pause between lines sent (servers may choke if this is too fast).
 my $waitline = 200;
 # If n lines is modulus this, pause for $waitclientbufferlines ms.
-my $clientbufferlines = 25;
+my $clientbufferlines = 45;
 # And pause for this long after $clientbufferlines, in millis.
-my $waitclientbufferlines = 30000;
+my $waitclientbufferlines = 45000;
 # If you want to keep a permanant history of the logs, then set
 # this to a directory, if it's undef then nothing will be stored.
 #my $permhistdir = undef;
