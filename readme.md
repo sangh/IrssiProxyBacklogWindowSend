@@ -47,9 +47,9 @@ person*; well adjusted people are perfectly fine to use what's available not
 worry too much about edge cases.
 
 My normal setup has me using `irssi` in a `tmux` session.  I want to be able to
-connect periodically with my phone (using use SSL) and have it replay whatever
-messages have been received (both channels and private messages) since I last saw
-them in `tmux`.  Doing this proved _much_ harder than I thought it would be.
+connect periodically with my phone (using SSL) and have it replay whatever
+messages have been received (both channels and private messages) since I last
+saw them in `tmux`.  Doing this proved _much_ harder than I thought it would be.
 
 This article---[IRC, My Way](http://noswap.com/articles/irc/)---sparked my
 my interest and got me to think I could get a backlog on a phone.
