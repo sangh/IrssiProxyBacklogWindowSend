@@ -6,6 +6,7 @@ use strict;
 use File::Copy;
 use File::Path;
 use Irssi;
+use Irssi::Irc;
 
 use vars qw($VERSION %IRSSI);
 
